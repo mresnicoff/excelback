@@ -1,11 +1,11 @@
-const { DataTypes } = require("sequelize");
-// Exportamos una funcion que define el modelo
-// Luego le injectamos la conexion a sequelize.
-module.exports = (sequelize) => {
-  // defino el modelo
-  sequelize.define("usuario", {
-    Nombre: { type: DataTypes.STRING, allowNull: false},
-    email: { type: DataTypes.STRING, allowNull:false,        primaryKey: true, },
-    passwordhasheada: { type: DataTypes.STRING},
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const usuarioSchema = new Schema({
+
+    Nombre: { type: String, required: true},
+    email: { type: String, required: true, },
+    passwordhasheada: { type: String,required: true},
+    permisos: [{ type: Schema.Types.ObjectId, ref: 'Permiso' }]
   });
-}
+
+  module.exports = mongoose.model('Usuario', usuarioSchema);

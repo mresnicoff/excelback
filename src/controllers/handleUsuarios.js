@@ -1,4 +1,4 @@
-const { Usuario, Permiso } = require("../db.js");
+const Usuario = require('../models/Usuario');
 const bcrypt = require("bcrypt")
 const handleUsuarios = async (req, res) => {
 if(req.method==="POST"){
@@ -7,8 +7,9 @@ if(req.method==="POST"){
       const hash = await bcrypt.hash(plaintextPassword, 10);
   return hash}
   const  cargar=req.body
-  const emailRegistrado = await Usuario.findOne({ where: { email: cargar.email } });
-if (emailRegistrado === null) {
+  console.log(cargar)
+  const emailRegistrado = await Usuario.find({ email: cargar.email  });
+if (emailRegistrado.length === 0) {
   const cargaCorregida={}
   cargaCorregida.Nombre=cargar.nombre
   cargaCorregida.passwordhasheada=await hashPassword(cargar.password)
@@ -17,7 +18,7 @@ if (emailRegistrado === null) {
       res.json(req.body);
   
 } else {
-  console.log("entró al else")
+  console.log(emailRegistrado)
   res.status(422).json({message:"El email ya está registrado"});
 }
   }
@@ -32,14 +33,12 @@ else{
   if(datos.email && datos.password){
 
 
-      const user = await Usuario.findOne({ include: {
-        model: Permiso
-      }, where: { email: datos.email } });
-
+      const user = await Usuario.find( { email: datos.email } ).populate("permisos");
+console.log(user[0].passwordhasheada)
     if (user !== null) {
-      if (await bcrypt.compare(datos.password, user.passwordhasheada))
+      if (await bcrypt.compare(datos.password, user[0].passwordhasheada))
       {
-      res.json(user);}
+      res.json(user[0]);}
       
       
       
@@ -53,7 +52,7 @@ else{
 
 
   else{
-    const misUsuarios = await Usuario.findAll();
+    const misUsuarios = await Usuario.find();
     res.json(misUsuarios);
   }
   }

@@ -1,10 +1,10 @@
-const { Consumo, } = require("../db.js");
+const Consumo = require('../models/Consumo');
 const postDatos = async (req, res) => {
 
-  const  cargar=req.body
+  // const  cargar=req.body
   console.log(req.body)
 
-await Consumo.bulkCreate(req.body);
+await Consumo.create(req.body);
     res.json(req.body);
   } 
 

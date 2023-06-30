@@ -1,12 +1,11 @@
 const asignarPermisos = async (req, res) => {
-    const { Permiso, } = require("../db.js");
-    const { Usuario, } = require("../db.js");
+  const Permiso = require('../models/Permiso');
+    const Usuario = require('../models/Usuario');
 datos=req.body
-const usuario=await Usuario.findOne({where:{email:datos.user}})
-console.log(datos.user)
-datos.permisos.forEach((id) => {
-    usuario.addPermisos(id);
-  });
+console.log(datos)
+ misPermisos=await Permiso.find({'id': {$all: datos.permisos}})
+console.log(misPermisos)
+await Usuario.updateMany({ 'email': datos.user }, { $push: { permisos: misPermisos } });
 
 res.json({mensaje:"hola"});
 }

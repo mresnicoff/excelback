@@ -2,10 +2,10 @@
   "name": "api",
   "version": "1.0.0",
   "description": "api for the excel reader",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon -L",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server",
+    "dev": "nodemon server"
   },
   "author": "Martin Resnicoff",
   "license": "ISC",

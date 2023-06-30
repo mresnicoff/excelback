@@ -1,11 +1,11 @@
-const { Consumo, } = require("../db.js");
+const Consumo = require('../models/Consumo');
 const deleteDatos = async (req, res) => {
 
 const zona=req.query.zona
 
-var misConsumos
 
-    misConsumos = await Consumo.destroy({where:{zona:zona}});
+
+    misConsumos = await Consumo.deleteMany( {zona:zona});
 
 
     res.json(misConsumos);
